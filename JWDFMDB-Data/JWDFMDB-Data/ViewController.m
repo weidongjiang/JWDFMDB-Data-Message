@@ -32,7 +32,7 @@
     JWDModel *model = [[JWDModel alloc] init];
     model.loginid = 679790;
     model.friendid = 13314;
-    model.message = [NSString stringWithFormat:@"蓝瘦香菇"];
+    model.message = [NSString stringWithFormat:@"'"];
     model.messagetype = 1;
     model.readStatus = 0;
     model.sendStatus = 1;

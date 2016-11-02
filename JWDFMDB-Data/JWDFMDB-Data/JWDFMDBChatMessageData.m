@@ -224,29 +224,37 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
     
    
     
-    // 方式1
-    NSString *sql = [NSString stringWithFormat:@"insert into %@ (loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime) values (%0ld,%0ld,'%@',%0ld,%0ld,%0ld,%f)",JWDFMDBChatMessageDataName,(long)messageModel.loginid,(long)messageModel.friendid,messageModel.message,(long)messageModel.messagetype,(long)messageModel.readStatus,(long)messageModel.sendStatus,messageModel.cureatetime];
-    
-    if ([self.database executeUpdate:sql]){
-        
-        return self.database.lastInsertRowId;
-        
-    }else{
-    
-        NSLog(@"插入数据出错 %@",self.database.lastErrorMessage);
-        return -1;
-    }
-    
-    // 方式2
-//    NSString *sql = [NSString stringWithFormat:@"insert into %@ (loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime) values (%ld,%ld,%@,%ld,%ld,%ld,%f)",JWDFMDBChatMessageDataName,(long)messageModel.loginid,(long)messageModel.friendid,messageModel.message,(long)messageModel.messagetype,(long)messageModel.readStatus,(long)messageModel.sendStatus,messageModel.cureatetime];
+//    // 方式1
+//    NSString *sql = [NSString stringWithFormat:@"insert into %@ (loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime) values (%0ld,%0ld,'%@',%0ld,%0ld,%0ld,%f)",JWDFMDBChatMessageDataName,(long)messageModel.loginid,(long)messageModel.friendid,messageModel.message,(long)messageModel.messagetype,(long)messageModel.readStatus,(long)messageModel.sendStatus,messageModel.cureatetime];
 //    
 //    if ([self.database executeUpdate:sql]){
-//        return self.database.lastInsertRowId;
-//    }else{
 //        
+//        return self.database.lastInsertRowId;
+//        
+//    }else{
+//    
 //        NSLog(@"插入数据出错 %@",self.database.lastErrorMessage);
 //        return -1;
 //    }
+    
+    // 方式2  当方式1 中插入的数据有特殊的字符是，就会数据写入失败，使用方式2可以完美解决这一问题。
+    NSString *sql = [NSString stringWithFormat:@"insert into %@ (loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime) values (?,?,?,?,?,?,?)",JWDFMDBChatMessageDataName];
+    
+    NSNumber *loginid = [NSNumber numberWithInteger:(long)messageModel.loginid];
+    NSNumber *friendid = [NSNumber numberWithInteger:(long)messageModel.friendid];
+    NSString *message = [NSString stringWithString:messageModel.message];
+    NSNumber *messagetype = [NSNumber numberWithInteger:(long)messageModel.messagetype];
+    NSNumber *readStatus = [NSNumber numberWithInteger:(long)messageModel.readStatus];
+    NSNumber *sendStatus = [NSNumber numberWithInteger:(long)messageModel.sendStatus];
+    NSNumber *cureatetime = [NSNumber numberWithFloat:messageModel.cureatetime];
+    
+    if ([self.database executeUpdate:sql withArgumentsInArray:@[loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime]]){
+        return self.database.lastInsertRowId;
+    }else{
+        
+        NSLog(@"插入数据出错 %@",self.database.lastErrorMessage);
+        return -1;
+    }
     
     
     
