@@ -211,7 +211,13 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
 
 #pragma mark -
 #pragma mark - 增 删 改 查
-
+/**
+ 增  插入数据
+ 
+ @param messageModel 消息模型
+ 
+ @return 消息id 也就是主键
+ */
 - (int64_t)addNewMessageWithModel:(JWDModel *)messageModel {
 
     if(nil == messageModel){
@@ -255,12 +261,88 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
         NSLog(@"插入数据出错 %@",self.database.lastErrorMessage);
         return -1;
     }
-    
-    
-    
+}
+/**
+ 删  根据id 删除数据
+ 
+ @param messageID 消息id
+ 
+ @return 是否删除成功
+ */
+- (BOOL)deleteMessageWithMessageID:(NSInteger)messageID {
+
+    NSString *sql = [NSString stringWithFormat:@"delete from %@ where messageid=%0ld",JWDFMDBChatMessageDataName,(long)messageID];
+    return [self.database executeUpdate:sql];
 }
 
+/**
+ 改
+ 
+ @param messageModel 数据模型
+ 
+ @return 是否修改成功
+ */
 
+- (BOOL)updateMessageWithMessageModel:(JWDModel *)messageModel{
+    
+    NSString *sql = [NSString stringWithFormat:@"update %@ set loginid=?,friendid=?,message=?,messagetype=?,readStatus=?,sendStatus=?,cureatetime=? where messageid=?",JWDFMDBChatMessageDataName];
+    
+    NSNumber *loginid = [NSNumber numberWithInteger:(long)messageModel.loginid];
+    NSNumber *friendid = [NSNumber numberWithInteger:(long)messageModel.friendid];
+    NSString *message = [NSString stringWithString:messageModel.message];
+    NSNumber *messagetype = [NSNumber numberWithInteger:(long)messageModel.messagetype];
+    NSNumber *readStatus = [NSNumber numberWithInteger:(long)messageModel.readStatus];
+    NSNumber *sendStatus = [NSNumber numberWithInteger:(long)messageModel.sendStatus];
+    NSNumber *cureatetime = [NSNumber numberWithFloat:messageModel.cureatetime];
+    NSNumber *messageid = [NSNumber numberWithInteger:(long)messageModel.messageid];
+
+    BOOL isupdate = [self.database executeUpdate:sql withArgumentsInArray:@[loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime,messageid]];
+    
+    return isupdate;
+
+}
+/**
+ 查 获取所有数据
+ 
+ @param loginid  用户id , 可以多账号登录，获取不同的数据
+ @param friendid 不同的聊天对象
+ @param offset   数据起始位置
+ @param limit    查询的个数
+ 
+ @return 模型数组
+ */
+- (NSArray<JWDModel *> *)getAllMessageWithLoginID:(NSInteger)loginid friendid:(NSInteger)friendid offset:(NSInteger)offset limit:(NSInteger)limit {
+
+    if (loginid<=0 || friendid<=0){
+        NSLog(@"参数 id 不对");
+        return nil;
+    }
+    
+    NSString *sql = [NSString stringWithFormat:@"select * from (select * from %@ where loginid=%ld and friendid=%ld order by cureatetime desc limit %ld offset %ld) order by cureatetime",JWDFMDBChatMessageDataName,loginid,friendid,limit,offset];
+    NSMutableArray<JWDModel *> *data = [NSMutableArray array];
+    FMResultSet *set = [self.database executeQuery:sql];
+    while ([set next]) {
+        
+        JWDModel *model = [[JWDModel alloc] init];
+        model.messageid = [set intForColumn:@"messageid"];
+        model.loginid = [set intForColumn:@"loginid"];
+        model.friendid = [set intForColumn:@"friendid"];
+        model.message = [set stringForColumn:@"message"];
+        model.messagetype = [set intForColumn:@"messagetype"];
+        model.readStatus = [set intForColumn:@"readStatus"];
+        model.sendStatus = [set intForColumn:@"sendStatus"];
+        model.cureatetime = [set doubleForColumn:@"cureatetime"];
+
+        [data addObject:model];
+    }
+    
+    if (data.count>0){
+        return [NSArray arrayWithArray:data];
+    }else{
+        return nil;
+    }
+    
+}
 
 @end
 
