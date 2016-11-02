@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "JWDFMDBChatMessageData.h"
 
 @interface ViewController ()
 
@@ -21,6 +22,11 @@
     
     
     
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+
+    JWDFMDBChatMessageData *chatMessageData = [JWDFMDBChatMessageData shareChatMeaage];
 }
 
 

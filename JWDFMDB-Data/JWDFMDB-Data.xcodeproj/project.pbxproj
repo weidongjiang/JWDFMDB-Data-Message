@@ -142,7 +142,7 @@
 				TargetAttributes = {
 					76C5F2311DC98B9A0004C70F = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 3ZPP94SLYH;
+						DevelopmentTeam = HF526ANGZB;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -353,7 +353,7 @@
 			baseConfigurationReference = 32C339156C6DD30BBC6FBE75 /* Pods-JWDFMDB-Data.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3ZPP94SLYH;
+				DEVELOPMENT_TEAM = HF526ANGZB;
 				INFOPLIST_FILE = "JWDFMDB-Data/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yixia.JWDFMDB-Data";
@@ -366,7 +366,7 @@
 			baseConfigurationReference = AC062C2909C5FFA78966B0A3 /* Pods-JWDFMDB-Data.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3ZPP94SLYH;
+				DEVELOPMENT_TEAM = HF526ANGZB;
 				INFOPLIST_FILE = "JWDFMDB-Data/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yixia.JWDFMDB-Data";
