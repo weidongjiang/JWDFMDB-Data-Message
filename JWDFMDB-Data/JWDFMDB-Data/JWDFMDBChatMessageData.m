@@ -45,18 +45,6 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
     return chatMessageData;
 }
 
-/**
- 创建数据表的存储地址
-
- @return 返回之地
- */
-+(NSString *)dataPath {
-
-    NSString *document = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    return [document stringByAppendingPathComponent:JWDFMDBChatName];
-    
-}
-
 - (instancetype)init {
 
     if(self == [super init]){
@@ -66,14 +54,11 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
         
             FMDatabase *database = [FMDatabase databaseWithPath:[JWDFMDBChatMessageData dataPath]];
             self.database = database;
-            
-            
+        
             // 创建表是否成功
             if(NO == [self createtable]){
                 return nil;
             }
-            
-            
             
         }else{// 已经有表，直接打开
             FMDatabase *database = [FMDatabase databaseWithPath:[JWDFMDBChatMessageData dataPath]];
@@ -81,20 +66,15 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
             if(NO == [self.database open]){
                 [self.database close];
             }else{
-                // 2.是否升级版本号
                 
+                // 2.是否升级版本号
                 // 如果需要更新数据库，那么可以在这里对相应的表添加和删除字段 并且更改版本号
                 NSString *updateGradeSql = [NSString stringWithFormat:@"alter table JWDFMDBChat_Message add age integer not null default -1"];
                 
                 // 如果不需要更新，直接传递 nil
                 [self updateGradeSql:nil newVersion:JWDFMDBChatVersion_num];
-            
             }
-        
-            
         }
-        
-        
     }
     return self;
 }
@@ -110,9 +90,19 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
     return [self.database goodConnection];
 }
 
+/**
+ 创建数据表的存储地址
+ 
+ @return 返回之地
+ */
++(NSString *)dataPath {
+    NSString *document = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    return [document stringByAppendingPathComponent:JWDFMDBChatName];
+    
+}
+
 - (BOOL)createtable {
 
-    
     [self.database open];
     
     // 创建版本表
@@ -178,35 +168,27 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
     // 不需要更新
     if (nil == updateGradeSql){
         return YES;
-    
     }else {// 需要更新
-    
         NSString *spl = [NSString stringWithFormat:@"select * from %@ order by id desc limit 0,1",JWDFMDBChatVersion];
         FMResultSet *set = [self.database executeQuery:spl];
         CGFloat lastversion = -1.0;
         while ([set next]) {
-            
             lastversion = [[set stringForColumn:@"version"] floatValue];
             if ([newVersion floatValue] > lastversion){
-            
                 // 执行更新数据库版本
                 if([self.database executeUpdate:updateGradeSql]){
                     return [self addNewVersion:newVersion];
                 }
             }
         }
-    
         // 没有记录版本号，需要更新
         if (lastversion == -1) {
             if([self.database executeUpdate:updateGradeSql]){
                 return [self addNewVersion:newVersion];
             }
         }
-        
     }
-    
     return YES;
-    
 }
 
 #pragma mark -
@@ -228,9 +210,7 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
         messageModel.message = @"";
     }
     
-   
-    
-//    // 方式1
+    // 方式1
 //    NSString *sql = [NSString stringWithFormat:@"insert into %@ (loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime) values (%0ld,%0ld,'%@',%0ld,%0ld,%0ld,%f)",JWDFMDBChatMessageDataName,(long)messageModel.loginid,(long)messageModel.friendid,messageModel.message,(long)messageModel.messagetype,(long)messageModel.readStatus,(long)messageModel.sendStatus,messageModel.cureatetime];
 //    
 //    if ([self.database executeUpdate:sql]){
@@ -303,12 +283,10 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
 }
 /**
  查 获取所有数据
- 
  @param loginid  用户id , 可以多账号登录，获取不同的数据
  @param friendid 不同的聊天对象
  @param offset   数据起始位置
  @param limit    查询的个数
- 
  @return 模型数组
  */
 - (NSArray<JWDModel *> *)getAllMessageWithLoginID:(NSInteger)loginid friendid:(NSInteger)friendid offset:(NSInteger)offset limit:(NSInteger)limit {
@@ -322,7 +300,6 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
     NSMutableArray<JWDModel *> *data = [NSMutableArray array];
     FMResultSet *set = [self.database executeQuery:sql];
     while ([set next]) {
-        
         JWDModel *model = [[JWDModel alloc] init];
         model.messageid = [set intForColumn:@"messageid"];
         model.loginid = [set intForColumn:@"loginid"];
@@ -332,18 +309,14 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
         model.readStatus = [set intForColumn:@"readStatus"];
         model.sendStatus = [set intForColumn:@"sendStatus"];
         model.cureatetime = [set doubleForColumn:@"cureatetime"];
-
         [data addObject:model];
     }
-    
     if (data.count>0){
         return [NSArray arrayWithArray:data];
     }else{
         return nil;
     }
-    
 }
-
 @end
 
 

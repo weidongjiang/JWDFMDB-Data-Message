@@ -100,4 +100,9 @@
     NSLog(@"data count %lu",(unsigned long)data.count);
 }
 
+- (void)dealloc {
+
+    [[JWDFMDBChatMessageData shareChatMeaage] closeDB];
+}
+
 @end
