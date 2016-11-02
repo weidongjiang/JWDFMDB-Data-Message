@@ -19,6 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [[JWDFMDBChatMessageData shareChatMeaage] openDB];
     
     UIButton *addbtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 100, 80, 40)];
     addbtn.backgroundColor = [UIColor greenColor];
@@ -52,10 +53,6 @@
 
 -(void)addbtnDid {
 
-    JWDFMDBChatMessageData *chatMessageData = [JWDFMDBChatMessageData shareChatMeaage];
-    
-    [chatMessageData openDB];
-    
     JWDModel *model = [[JWDModel alloc] init];
     model.loginid = 679790;
     model.friendid = 13314;
@@ -65,7 +62,7 @@
     model.sendStatus = 1;
     model.cureatetime = 2698798713;
     
-    int64_t messageid = [chatMessageData addNewMessageWithModel:model];
+    int64_t messageid = [[JWDFMDBChatMessageData shareChatMeaage] addNewMessageWithModel:model];
     if (-1 != messageid){
         NSLog(@"数据插入成功 消息id %lld",messageid);
     }
