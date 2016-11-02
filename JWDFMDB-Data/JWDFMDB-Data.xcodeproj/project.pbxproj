@@ -13,6 +13,7 @@
 		76C5F2401DC98B9A0004C70F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76C5F23E1DC98B9A0004C70F /* Main.storyboard */; };
 		76C5F2421DC98B9A0004C70F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76C5F2411DC98B9A0004C70F /* Assets.xcassets */; };
 		76C5F2451DC98B9A0004C70F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76C5F2431DC98B9A0004C70F /* LaunchScreen.storyboard */; };
+		76C5F24E1DC999800004C70F /* JWDFMDBChatMessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 76C5F24D1DC999800004C70F /* JWDFMDBChatMessageData.m */; };
 		FF384AED48D91BF6C1E95A02 /* libPods-JWDFMDB-Data.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5141DB0304888115F0CA94 /* libPods-JWDFMDB-Data.a */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,8 @@
 		76C5F2411DC98B9A0004C70F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76C5F2441DC98B9A0004C70F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76C5F2461DC98B9A0004C70F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		76C5F24C1DC999800004C70F /* JWDFMDBChatMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWDFMDBChatMessageData.h; sourceTree = "<group>"; };
+		76C5F24D1DC999800004C70F /* JWDFMDBChatMessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWDFMDBChatMessageData.m; sourceTree = "<group>"; };
 		9D5141DB0304888115F0CA94 /* libPods-JWDFMDB-Data.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWDFMDB-Data.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC062C2909C5FFA78966B0A3 /* Pods-JWDFMDB-Data.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWDFMDB-Data.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWDFMDB-Data/Pods-JWDFMDB-Data.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,6 +89,8 @@
 				76C5F2391DC98B9A0004C70F /* AppDelegate.m */,
 				76C5F23B1DC98B9A0004C70F /* ViewController.h */,
 				76C5F23C1DC98B9A0004C70F /* ViewController.m */,
+				76C5F24C1DC999800004C70F /* JWDFMDBChatMessageData.h */,
+				76C5F24D1DC999800004C70F /* JWDFMDBChatMessageData.m */,
 				76C5F23E1DC98B9A0004C70F /* Main.storyboard */,
 				76C5F2411DC98B9A0004C70F /* Assets.xcassets */,
 				76C5F2431DC98B9A0004C70F /* LaunchScreen.storyboard */,
@@ -226,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76C5F24E1DC999800004C70F /* JWDFMDBChatMessageData.m in Sources */,
 				76C5F23D1DC98B9A0004C70F /* ViewController.m in Sources */,
 				76C5F23A1DC98B9A0004C70F /* AppDelegate.m in Sources */,
 				76C5F2371DC98B9A0004C70F /* main.m in Sources */,
