@@ -7,11 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+@class JWDModel;
 
 @interface JWDFMDBChatMessageData : NSObject
 
 
 +(instancetype)shareChatMeaage;
+- (BOOL)openDB;
+- (BOOL)closeDB;
+- (BOOL)isOpend;
+/**
+ 增  插入数据
 
+ @param messageModel 消息模型
+
+ @return 消息id 也就是主键
+ */
+- (int64_t)addNewMessageWithModel:(JWDModel *)messageModel;
 
 @end

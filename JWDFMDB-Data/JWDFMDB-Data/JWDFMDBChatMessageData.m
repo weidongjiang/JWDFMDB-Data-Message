@@ -9,6 +9,7 @@
 #import "JWDFMDBChatMessageData.h"
 #include <UIKit/UIKit.h>
 #import <FMDB.h>
+#import "JWDModel.h"
 
 // 数据库名
 #define JWDFMDBChatName @"JWDFMDBChatMessageData.sqlite"
@@ -82,11 +83,11 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
             }else{
                 // 2.是否升级版本号
                 
-                // 如果需要更新数据库，那么可以在这里对相应的表添加和删除字段
+                // 如果需要更新数据库，那么可以在这里对相应的表添加和删除字段 并且更改版本号
                 NSString *updateGradeSql = [NSString stringWithFormat:@"alter table JWDFMDBChat_Message add age integer not null default -1"];
                 
                 // 如果不需要更新，直接传递 nil
-                [self updateGradeSql:updateGradeSql newVersion:@"4.0"];
+                [self updateGradeSql:nil newVersion:JWDFMDBChatVersion_num];
             
             }
         
@@ -96,6 +97,17 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
         
     }
     return self;
+}
+
+
+- (BOOL)openDB {
+    return [self.database open];
+}
+- (BOOL)closeDB {
+    return [self.database close];
+}
+- (BOOL)isOpend {
+    return [self.database goodConnection];
 }
 
 - (BOOL)createtable {
@@ -194,6 +206,49 @@ static JWDFMDBChatMessageData *chatMessageData = nil;
     }
     
     return YES;
+    
+}
+
+#pragma mark -
+#pragma mark - 增 删 改 查
+
+- (int64_t)addNewMessageWithModel:(JWDModel *)messageModel {
+
+    if(nil == messageModel){
+        return NO;
+    }
+    
+    if(nil == messageModel.message){
+        messageModel.message = @"";
+    }
+    
+   
+    
+    // 方式1
+    NSString *sql = [NSString stringWithFormat:@"insert into %@ (loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime) values (%0ld,%0ld,'%@',%0ld,%0ld,%0ld,%f)",JWDFMDBChatMessageDataName,(long)messageModel.loginid,(long)messageModel.friendid,messageModel.message,(long)messageModel.messagetype,(long)messageModel.readStatus,(long)messageModel.sendStatus,messageModel.cureatetime];
+    
+    if ([self.database executeUpdate:sql]){
+        
+        return self.database.lastInsertRowId;
+        
+    }else{
+    
+        NSLog(@"插入数据出错 %@",self.database.lastErrorMessage);
+        return -1;
+    }
+    
+    // 方式2
+//    NSString *sql = [NSString stringWithFormat:@"insert into %@ (loginid,friendid,message,messagetype,readStatus,sendStatus,cureatetime) values (%ld,%ld,%@,%ld,%ld,%ld,%f)",JWDFMDBChatMessageDataName,(long)messageModel.loginid,(long)messageModel.friendid,messageModel.message,(long)messageModel.messagetype,(long)messageModel.readStatus,(long)messageModel.sendStatus,messageModel.cureatetime];
+//    
+//    if ([self.database executeUpdate:sql]){
+//        return self.database.lastInsertRowId;
+//    }else{
+//        
+//        NSLog(@"插入数据出错 %@",self.database.lastErrorMessage);
+//        return -1;
+//    }
+    
+    
     
 }
 
